@@ -11,7 +11,7 @@ def impurity(labels):
     """Return a non-negative impurity score for a 1D array of integer class labels."""
     # TODO: score how mixed the labels are; 0 for a pure set, larger for more mixed sets.
     if len(np.unique(labels)) == 1 or len(labels) == 0:
-        return False
+        return 0.0
     l, counts = np.unique(labels, return_counts=True)
     p = counts / len(labels)
 
