@@ -41,8 +41,32 @@ def split_score(parent_labels, left_labels, right_labels):
     w_r = len(right_labels) / n 
     return impurity(parent_labels) - (w_l * impurity(left_labels) + w_r * impurity(right_labels))
 
-# Step 4 - best_split (not yet solved)
-# TODO: implement
+# Step 4 - best_split
+import numpy as np
+
+def best_split(features, labels, feature_indices):
+    current_best = {
+        'feature_index': None, 
+        'threshold': None, 
+        'score': 0.0}
+
+    for fi in feature_indices:
+        u = np.unique(features[:, fi])
+        if len(u) <= 1:
+            continue
+        # Try midpoints between consecutive unique values
+        for i in range(len(u) - 1):
+            thresh = (u[i] + u[i + 1]) / 2.0
+            lx, ly, rx, ry = split_dataset(features, labels, fi, thresh)
+            if len(lx) == 0 or len(rx) == 0:
+                continue
+            score = split_score(labels, ly, ry)
+            if score > current_best['score']:
+                current_best['feature_index'] = fi
+                current_best['threshold'] = thresh
+                current_best['score'] = score
+
+    return current_best
 
 # Step 5 - should_stop (not yet solved)
 # TODO: implement
